@@ -67,9 +67,9 @@
         android:layout_height="match_parent"
         android:layout_below="@id/stats_header_view_group"
         android:background="@android:color/darker_gray"
-        custom:gridLineColor="@color/blue_400"
+        custom:gridLineColor="@android:color/transparent"
         custom:gridLineWidth="3dp"
-        custom:borderColor="@color/blue_400"
+        custom:borderColor="@android:color/transparent"
         custom:borderWidth="2dp"
         />
 
