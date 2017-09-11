@@ -216,7 +216,7 @@ public class Game {
 
             switch (action) {
                 // Toggling mine flag on a tile
-                case TileView.CLICK:
+                case TileView.LONG_CLICK:
                     switch(tileView.getState()) {
                         case TileView.COVERED:
                             // Add a flag
@@ -238,7 +238,7 @@ public class Game {
                     break;
 
                 // Uncovering a tile
-                case TileView.LONG_CLICK:
+                case TileView.CLICK:
                     if(tileView.getState() == TileView.COVERED) {
                         // Even if a player loses, uncover the tile.
                         state = TileView.UNCOVERED;

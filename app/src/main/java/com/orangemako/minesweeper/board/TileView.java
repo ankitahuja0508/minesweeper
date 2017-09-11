@@ -37,6 +37,7 @@ public class TileView extends View {
     private Bus mGameBus;
 
     static Map<Integer, Integer> sAdjacentMineCountToColorMap = new HashMap<>();
+    static Map<Integer, Integer> sAdjacentMineCountToDrawableMap = new HashMap<>();
 
     // Colors for adjacent mines count
     static {
@@ -48,6 +49,15 @@ public class TileView extends View {
         sAdjacentMineCountToColorMap.put(6, Color.CYAN);
         sAdjacentMineCountToColorMap.put(7, Color.YELLOW);
         sAdjacentMineCountToColorMap.put(8, Color.RED);
+
+        sAdjacentMineCountToDrawableMap.put(1, R.drawable.ic_tile_number_1);
+        sAdjacentMineCountToDrawableMap.put(2, R.drawable.ic_tile_number_2);
+        sAdjacentMineCountToDrawableMap.put(3, R.drawable.ic_tile_number_3);
+        sAdjacentMineCountToDrawableMap.put(4, R.drawable.ic_tile_number_4);
+        sAdjacentMineCountToDrawableMap.put(5, R.drawable.ic_tile_number_5);
+        sAdjacentMineCountToDrawableMap.put(6, R.drawable.ic_tile_number_6);
+        sAdjacentMineCountToDrawableMap.put(7, R.drawable.ic_tile_number_7);
+        sAdjacentMineCountToDrawableMap.put(8, R.drawable.ic_tile_number_8);
     }
 
     public TileView(Context context, int xGridCoordinate, int yGridCoordinate) throws InvalidArgumentException {
@@ -89,7 +99,7 @@ public class TileView extends View {
 
     private void setupDrawableBackgrounds() throws InvalidArgumentException {
         Drawable coveredTile = setupCoveredTile();
-        LayerDrawable flaggedMineDrawable = new LayerDrawable(new Drawable[]{coveredTile, new ConcentricCirclesDrawable()});
+        Drawable flaggedMineDrawable =  getResources().getDrawable( R.drawable.ic_tile_flagged);
 
         mDrawableContainer = new LevelListDrawable();
         mDrawableContainer.addLevel(0, COVERED, coveredTile);
@@ -99,23 +109,23 @@ public class TileView extends View {
     }
 
     private Drawable setupCoveredTile() throws InvalidArgumentException {
-        // TODO: Move this to a theme
-        int colorInner = GraphicsUtils.getColor(getContext(), R.color.blue_grey_200);
-        int colorTop = GraphicsUtils.getColor(getContext(), R.color.blue_grey_300);
-        int colorLeft = GraphicsUtils.getColor(getContext(), R.color.blue_grey_400);
-        int colorBottom = GraphicsUtils.getColor(getContext(), R.color.blue_grey_500);
-        int colorRight = GraphicsUtils.getColor(getContext(), R.color.blue_grey_600);
+        /*// TODO: Move this to a theme
+        int colorInner = GraphicsUtils.getColor(getContext(), R.color.blue_200);
+        int colorTop = GraphicsUtils.getColor(getContext(), R.color.blue_300);
+        int colorLeft = GraphicsUtils.getColor(getContext(), R.color.blue_400);
+        int colorBottom = GraphicsUtils.getColor(getContext(), R.color.blue_500);
+        int colorRight = GraphicsUtils.getColor(getContext(), R.color.blue_600);
 
-        int[] tileColors = new int[]{colorInner, colorLeft, colorTop, colorRight, colorBottom};
+        int[] tileColors = new int[]{colorInner, colorLeft, colorTop, colorRight, colorBottom};*/
 
-        return new BeveledTileDrawable(tileColors, null);
+        return getResources().getDrawable( R.drawable.ic_tile_mask_default);
     }
 
     public void setupUncoveredTileDrawable(BoardSquare boardSquare) {
-        Drawable uncoveredDrawable;
+        Drawable uncoveredDrawable = getResources().getDrawable( R.drawable.ic_tile_blank);;
 
         if(boardSquare != null && boardSquare.doesContainMine()) {
-            uncoveredDrawable = new ConcentricCirclesDrawable(new int[]{Color.RED, Color.BLACK}, 0.50f);
+            uncoveredDrawable = getResources().getDrawable( R.drawable.ic_tile_bomb);
         }
         else {
             String adjacentMineCountText;
@@ -127,10 +137,10 @@ public class TileView extends View {
             else {
                 int adjacentMinesCount = boardSquare.getAdjacentMinesCount();
 
-                textColor = sAdjacentMineCountToColorMap.get(adjacentMinesCount);
-                adjacentMineCountText = String.valueOf(adjacentMinesCount);
+                uncoveredDrawable = getResources().getDrawable(sAdjacentMineCountToDrawableMap.get(adjacentMinesCount));
+
             }
-            uncoveredDrawable = new TextDrawable(adjacentMineCountText, textColor);
+
         }
         mDrawableContainer.addLevel(0, UNCOVERED, uncoveredDrawable);
     }
